@@ -22,6 +22,25 @@ const LS = {
 
 const MAX_CARDS = 200;
 
+// ── Seed Cards (instant load, no API call needed) ───────────────────
+const SEED_CARDS = [
+  { id: "seed_1", title: "Debt Tokenization Is Rewriting the Rules", caption: "Tokenizing debt converts a $100K minimum corporate bond into $100 digital fractions on blockchain. 24/7 liquidity, no gatekeepers. The $16T debt market is finally opening up to everyone — and settlement drops from T+2 to near-instant.", category: "TOKENIZATION", emoji: "⛓️", visualPrompt: "Abstract corporate bonds dissolving into glowing blockchain tokens, dark navy void, financial data streams, cinematic 4K", colors: ["#050510","#0d0a2e","#1a1240"], accent: "#6366f1" },
+  { id: "seed_2", title: "The Dollar System Controls Everything", caption: "Global liquidity is hierarchical. The Fed sits at the top, G-SIBs access it directly, everyone else pays a premium visible in FX swap deviations from Covered Interest Parity. Your proximity to the Fed determines your true funding cost.", category: "GLOBAL_LIQUIDITY", emoji: "🌊", visualPrompt: "Network visualization of global dollar flows from Federal Reserve outward, glowing hierarchical nodes, pulsing streams, dark cinematic", colors: ["#010b14","#02182b","#032d4a"], accent: "#06b6d4" },
+  { id: "seed_3", title: "Replace Lawyers With Immutable Code", caption: "Smart contracts replace discretionary human intervention in finance. Haircuts adjust algorithmically, liquidations become structurally unnecessary. Zero forced liquidations in mutualized buffer models — the shift from discretion to algorithmic governance.", category: "SMART_CONTRACTS", emoji: "📜", visualPrompt: "Glowing smart contract code transforming into dissolving legal documents, blockchain network, futuristic dark aesthetic", colors: ["#050a05","#091809","#0f2e10"], accent: "#22c55e" },
+  { id: "seed_4", title: "The Hidden Plumbing of Capital Markets", caption: "Prime brokers, money market funds, global custodians — these transmission nodes move global capital. When any node seizes up, liquidity evaporates. The Fed's real job isn't stimulating the economy — it's maintaining this plumbing.", category: "INTERMEDIATION", emoji: "🏦", visualPrompt: "Cross-section of complex financial plumbing, glowing pipes carrying colored liquidity flows, dramatic chiaroscuro lighting", colors: ["#0f0500","#1f0a00","#2d1200"], accent: "#f97316" },
+  { id: "seed_5", title: "Collateral Is the New Money", caption: "Since 2008, collateral drives intermediation. Individual enforcement creates procyclicality — falling prices trigger forced sales crashing prices further. Mutualized buffers break this doom loop with systemic haircuts replacing individual enforcement.", category: "COLLATERAL", emoji: "💎", visualPrompt: "Diverse assets deposited into glowing communal vault, algorithmic governance nodes, smooth liquidity flows, dark luxury aesthetic", colors: ["#0a0718","#150d2e","#1e1040"], accent: "#a855f7" },
+  { id: "seed_6", title: "Direct Lending Is Eating Banking's Lunch", caption: "Private credit funds lend straight to companies — faster, more confidential, more flexible. The covenant risk premium isn't about default risk. It's about bespoke contract structures giving lenders unique control. Europe's market grew 400%+ since 2015.", category: "PRIVATE_CREDIT", emoji: "💸", visualPrompt: "Private capital flowing directly between entities, bypassing a dissolving bank, sleek dark financial district setting", colors: ["#0c0c0c","#181818","#222222"], accent: "#eab308" },
+  { id: "seed_7", title: "The Mutualized Stablecoin Nobody Knows", caption: "Not Tether, not USDC — endogenous mutualized cash-for-collateral swaps. Tokens represent continuous access rights to collective buffer value. Unlike Tether's leveraged structure, this model smooths volatility through collective risk sharing. No liquidation spirals by design.", category: "STABLECOINS", emoji: "🪙", visualPrompt: "Stable glowing coin hovering above mutualized pool of diverse assets, warm collective light, chaotic spiral in background", colors: ["#001a10","#002d1a","#003d22"], accent: "#10b981" },
+  { id: "seed_8", title: "Half the World Is Locked Out of Dollars", caption: "Jurisdictions without Fed access or swap lines pay structural premiums — not because they're risky, but because the system excludes them architecturally. A neutral tokenized buffer with open participation eliminates this asymmetry.", category: "FINANCIAL_INCLUSION", emoji: "🌐", visualPrompt: "Globe with privileged regions glowing and others in darkness, new decentralized network of equal light spreading", colors: ["#050515","#0a0a28","#0f0f3d"], accent: "#818cf8" },
+  { id: "seed_9", title: "Repo Markets: The Heartbeat of Finance", caption: "Repo is where institutions borrow short-term cash against collateral. SOFR, TGCR, OBFR signal systemic health. When repo strains, collateral traps emerge: pyramids of reused internal collateral build until confidence cracks. Then everything seizes.", category: "REPO_MARKETS", emoji: "🔄", visualPrompt: "Financial heartbeat monitor showing repo transaction pulse, dramatic flatline moment, recovery with Fed intervention, cinematic", colors: ["#0f0a00","#1f1400","#2d1e00"], accent: "#f59e0b" },
+  { id: "seed_10", title: "Credit Ratings Are Not What You Think", caption: "S&P, Moody's, and Fitch don't predict defaults — they rank relative creditworthiness. A BBB rating means adequate capacity to meet obligations, not safety. The real insight: transition matrices show how ratings migrate over time, revealing hidden risk trajectories.", category: "CREDIT_RATINGS", emoji: "📊", visualPrompt: "Floating credit rating letters transforming and shifting between grades, glowing transition arrows, dark data visualization aesthetic", colors: ["#0a0510","#140a20","#1e1030"], accent: "#ec4899" },
+  { id: "seed_11", title: "How Securitization Actually Works", caption: "Banks bundle loans into SPVs, tranch the cash flows into AAA/mezzanine/equity slices, and sell them. The magic: diversification transforms risky individual loans into investable securities. The risk: correlation assumptions fail catastrophically in crises.", category: "SECURITIZATION", emoji: "📦", visualPrompt: "Individual loans being sorted and stacked into glowing tranched structures, waterfall of cash flows, dark abstract financial", colors: ["#050808","#0a1515","#0f2222"], accent: "#14b8a6" },
+  { id: "seed_12", title: "Why FX Swaps Expose the Dollar Hierarchy", caption: "Cross-currency basis swaps reveal who pays what for dollar access. When basis goes deeply negative, it means non-US banks are desperate for dollars. CIP violations aren't anomalies — they're the market pricing in your distance from the Fed.", category: "FX_MARKETS", emoji: "💱", visualPrompt: "Currency symbols orbiting a central dollar, hierarchical distance shown by glow intensity, dark space aesthetic", colors: ["#080510","#100a20","#180f30"], accent: "#8b5cf6" },
+  { id: "seed_13", title: "The September 2019 Repo Crisis Explained", caption: "Treasury issuance surged, corporate tax payments drained reserves, and dealer balance sheets were maxed. Overnight repo rates spiked to 10% — the Fed injected $75B in emergency repos. The plumbing nearly broke in plain sight.", category: "SYSTEMIC_RISK", emoji: "🚨", visualPrompt: "Financial pressure gauge hitting red zone, pipes bursting with liquidity, emergency Fed intervention beam, dark dramatic", colors: ["#100505","#200a0a","#300f0f"], accent: "#ef4444" },
+  { id: "seed_14", title: "Project Finance: Debt With No Recourse", caption: "In project finance, lenders have zero claim on the sponsor's balance sheet. The project's cash flows are the only repayment source. That's why debt structuring — reserve accounts, sweep mechanisms, DSCR covenants — is everything.", category: "PROJECT_FINANCE", emoji: "🏗️", visualPrompt: "Massive infrastructure project with visible cash flow streams, isolated financial structure floating, cinematic construction aesthetic", colors: ["#08080c","#10101a","#181828"], accent: "#6366f1" },
+  { id: "seed_15", title: "Derivatives: $600T Notional, Real Risk", caption: "The global derivatives market is $600T+ notional — 6x world GDP. But notional isn't exposure. Net exposure after netting and collateral is a fraction. Still, counterparty risk concentration in a few dealers makes the system fragile at its core.", category: "DERIVATIVES", emoji: "📈", visualPrompt: "Massive abstract web of interconnected derivative contracts, pulsing counterparty links, dark network visualization", colors: ["#050a10","#0a1420","#0f1e30"], accent: "#0ea5e9" },
+].map(c => ({ ...c, videoUrl: null, videoStatus: "none", videoTaskId: null, createdAt: Date.now() }));
+
 // ── API Layer ───────────────────────────────────────────────────────
 async function generateFeedBatch(count = 3, excludeTopics = []) {
   const res = await fetch(`${API_BASE}/api/generate-feed`, {
@@ -110,42 +129,31 @@ function ActionButton({ icon, count, active, onClick }) {
   );
 }
 
-// ── ShimmerPlaceholder ──────────────────────────────────────────────
-function ShimmerPlaceholder({ status }) {
-  const label = status === "rendering" ? "Rendering video..." : status === "failed" ? "Video unavailable" : "Preparing visual...";
+// ── AnimatedBackground ──────────────────────────────────────────────
+function AnimatedBackground({ colors, accent }) {
+  const bg = colors
+    ? `linear-gradient(155deg, ${colors[0]} 0%, ${colors[1]} 55%, ${colors[2]} 100%)`
+    : "linear-gradient(155deg, #0a0a1a 0%, #111128 50%, #0a0a1a 100%)";
+  const ac = accent || "#6366f1";
   return (
-    <div style={{
-      position: "absolute", inset: 0, zIndex: 1,
-      background: "linear-gradient(155deg, #0a0a1a 0%, #111128 50%, #0a0a1a 100%)",
-      display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 12,
-      overflow: "hidden",
-    }}>
-      {/* Shimmer sweep */}
-      {status !== "failed" && (
-        <div style={{
-          position: "absolute", inset: 0, overflow: "hidden", opacity: 0.15,
-        }}>
-          <div style={{
-            position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
-            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent)",
-            animation: "shimmerSweep 2s ease-in-out infinite",
-          }} />
-        </div>
-      )}
-      {status !== "failed" && (
-        <div style={{
-          width: 40, height: 40, borderRadius: "50%",
-          border: "2px solid rgba(99,102,241,0.2)",
-          borderTop: "2px solid #6366f1",
-          animation: "spin 1s linear infinite",
-        }} />
-      )}
-      <span style={{
-        color: status === "failed" ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.5)",
-        fontSize: 12, fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
-      }}>
-        {label}
-      </span>
+    <div style={{ position: "absolute", inset: 0, zIndex: 1, background: bg, overflow: "hidden" }}>
+      {/* Radial glow */}
+      <div style={{
+        position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)",
+        width: "80%", paddingBottom: "80%", borderRadius: "50%",
+        background: `radial-gradient(circle, ${ac}15 0%, transparent 65%)`,
+      }} />
+      {/* Grid pattern */}
+      <div style={{
+        position: "absolute", inset: 0, opacity: 0.03,
+        backgroundImage: `linear-gradient(${ac} 1px, transparent 1px), linear-gradient(90deg, ${ac} 1px, transparent 1px)`,
+        backgroundSize: "44px 44px",
+      }} />
+      {/* Bottom fade */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0, height: "60%",
+        background: "linear-gradient(transparent, rgba(0,0,0,0.97))",
+      }} />
     </div>
   );
 }
@@ -189,7 +197,10 @@ function ReelCard({
     <div onClick={handleTap} style={{
       width: "100%", height: "100%", position: "relative", overflow: "hidden", background: "#000",
     }}>
-      {/* Video background */}
+      {/* Animated gradient background (always visible as base) */}
+      <AnimatedBackground colors={card.colors} accent={card.accent} />
+
+      {/* Video background (overlays gradient when ready) */}
       {hasVideo && (
         <video
           ref={videoRef}
@@ -198,26 +209,40 @@ function ReelCard({
           onError={() => { /* parent handles via videoStatus */ }}
           style={{
             position: "absolute", inset: 0,
-            width: "100%", height: "100%", objectFit: "cover", zIndex: 1,
+            width: "100%", height: "100%", objectFit: "cover", zIndex: 2,
           }}
         />
       )}
 
-      {/* Shimmer placeholder when loading/failed/no video */}
-      {(isLoading || isFailed || !hasVideo) && (
-        <ShimmerPlaceholder status={isFailed ? "failed" : isLoading ? "rendering" : "preparing"} />
+      {/* Video loading indicator */}
+      {isLoading && (
+        <div style={{
+          position: "absolute", top: "30%", left: "50%", transform: "translate(-50%, -50%)",
+          zIndex: 5, textAlign: "center",
+        }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: "50%",
+            border: `2px solid ${card.accent || "#6366f1"}33`,
+            borderTop: `2px solid ${card.accent || "#6366f1"}`,
+            animation: "spin 1s linear infinite", margin: "0 auto 8px",
+          }} />
+          <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 10, fontFamily: "'DM Sans', sans-serif" }}>
+            Rendering video...
+          </span>
+        </div>
       )}
 
       {/* Dark gradient overlay at bottom */}
       <div style={{
         position: "absolute", bottom: 0, left: 0, right: 0,
-        height: "65%", zIndex: 2,
+        height: "65%", zIndex: 3,
         background: "linear-gradient(transparent, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.92))",
       }} />
 
       {/* Bottom text content */}
       <div style={{
         position: "absolute", bottom: 80, left: 14, right: 70, zIndex: 10,
+        animation: isActive ? "fadeIn 0.4s ease-out" : undefined,
       }}>
         {/* Author row */}
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
@@ -690,7 +715,6 @@ export default function FinanceReels() {
   const [showHeart, setShowHeart] = useState(false);
   const [toast, setToast] = useState(null);
   const [commentCardId, setCommentCardId] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [installPrompt, setInstallPrompt] = useState(null);
 
   const lastNav = useRef(0);
@@ -806,42 +830,38 @@ export default function FinanceReels() {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Seed initial feed ─────────────────────────────────────────
+  // ── Seed initial feed (instant from SEED_CARDS + AI expansion) ──
   useEffect(() => {
     if (cards.length > 0 || generatingRef.current) return;
-    generatingRef.current = true;
-    setLoading(true);
+    // Show seed cards immediately — no loading screen
+    setCards(SEED_CARDS);
 
-    generateFeedBatch(5)
+    // Then expand with AI-generated cards in background
+    generatingRef.current = true;
+    const seedTopics = SEED_CARDS.map(c => c.category);
+    generateFeedBatch(5, seedTopics)
       .then(newCards => {
-        setCards(newCards);
-        // Auto-start video for first 2 cards
+        setCards(prev => [...prev, ...newCards]);
         newCards.slice(0, 2).forEach(c => startVideoForCard(c));
       })
-      .catch(() => {
-        showToast("Failed to generate feed. Check your connection.");
-      })
-      .finally(() => {
-        setLoading(false);
-        generatingRef.current = false;
-      });
+      .catch(() => {})
+      .finally(() => { generatingRef.current = false; });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Auto-load more cards when near end ────────────────────────
+  // ── Auto-load more cards when near end (aggressive: within 4) ──
   useEffect(() => {
     if (cards.length === 0) return;
-    if (cur < cards.length - 2) return;
+    if (cur < cards.length - 4) return;
     if (generatingRef.current) return;
     generatingRef.current = true;
 
-    const excludeTopics = cards.slice(-10).map(c => c.category);
-    generateFeedBatch(3, excludeTopics)
+    const excludeTopics = cards.slice(-15).map(c => c.category);
+    generateFeedBatch(5, excludeTopics)
       .then(newCards => {
         setCards(prev => {
           const combined = [...prev, ...newCards];
           return combined.slice(-MAX_CARDS);
         });
-        // Auto-start video for new cards
         newCards.forEach(c => startVideoForCard(c));
       })
       .catch(() => {})
@@ -883,7 +903,6 @@ export default function FinanceReels() {
   const getLikeCount = (cardId) => likes[cardId] ? 1 : 0;
 
   // ── Render ────────────────────────────────────────────────────
-  if (loading && cards.length === 0) return <LoadingScreen />;
 
   return (
     <div
